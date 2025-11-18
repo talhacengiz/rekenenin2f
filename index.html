@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><title>Rekenquiz 3F – Hoofdstukken 1 t/m 15</title><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#2b6cb0 0,#111827 55%,#020617 100%);color:#e5e7eb}
+.app{width:100%;max-width:960px;background:rgba(15,23,42,.96);border-radius:20px;padding:24px 20px 26px;box-shadow:0 20px 45px rgba(0,0,0,.55)}
+header{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(148,163,184,.35)}
+header h1{font-size:1.7rem;margin-bottom:3px}
+header p,.controls label{font-size:.95rem;color:#9ca3af}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-bottom:18px}
+select{border-radius:999px;border:1px solid rgba(148,163,184,.6);background:rgba(15,23,42,.9);color:#e5e7eb;padding:7px 12px;font-size:.95rem;min-width:210px}
+button{border-radius:999px;border:none;padding:8px 16px;font-size:.95rem;cursor:pointer;background:linear-gradient(135deg,#38bdf8,#1d4ed8);color:#fff;font-weight:500;transition:.08s;white-space:nowrap}
+button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 20px rgba(37,99,235,.4)}
+button:active:not(:disabled){transform:none}
+button:disabled{opacity:.45;cursor:default}
+.question-card{border-radius:16px;background:radial-gradient(circle at top left,rgba(56,189,248,.12),rgba(15,23,42,.98));border:1px solid rgba(148,163,184,.4);padding:14px}
+.question-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.badge{padding:3px 10px;border-radius:999px;font-size:.8rem;background:rgba(15,23,42,.96);border:1px solid rgba(96,165,250,.7);color:#bfdbfe}
+.question-text{font-size:1.02rem;line-height:1.5;margin-bottom:12px}
+.image-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px}
+.image-container img{width:100%;max-height:260px;object-fit:contain;border-radius:10px;border:1px solid rgba(148,163,184,.6);background:#020617}
+.actions{display:flex;gap:8px;margin-bottom:8px}
+.answer{margin-top:4px;padding:10px;border-radius:12px;background:rgba(15,23,42,.93);border:1px dashed rgba(148,163,184,.7);font-size:.97rem;line-height:1.5;display:none}
+.muted{font-size:.9rem;color:#9ca3af;margin-top:4px}
+</style>
+</head>
+<body><div class="app"><header><h1>Rekenen in 2F</h1></header>
+
+<section class="controls"><label for="chapter-select">Hoofdstuk:</label><select id="chapter-select">
+<option value="1">1 – Getallen</option><option value="2">2 – Optellen en aftrekken</option>
+<option value="3">3 – Vermenigvuldigen</option><option value="4">4 – Delen</option>
+<option value="5">5 – Breuken</option><option value="6">6 – Rekenen in de praktijk</option>
+<option value="7">7 – Verhoudingen</option><option value="8">8 – Procenten</option>
+<option value="9">9 – Procentuele afname en toename</option><option value="10">10 – Maten en hoeveelheden</option>
+<option value="11">11 – Lijnen en figuren</option><option value="12">12 – Omtrek en oppervlakte</option>
+<option value="13">13 – Inhoud</option><option value="14">14 – Tijd en snelheid</option>
+<option value="15">15 – Kaarten en routes</option><option value="16">16 – Tabellen en schema’s</option>
+<option value="17">17 – Diagrammen</option><option value="18">18 – Formules en grafieken</option>
+</select><button id="new-question-btn">Nieuwe vraag</button></section>
+
+<section class="question-card" id="question-card"><div class="question-header"><h2 id="question-title">Nog geen vraag</h2><span class="badge" id="chapter-badge">Hoofdstuk –</span></div>
+<p class="question-text" id="question-text">Kies een hoofdstuk en klik op “Nieuwe vraag”.</p>
+<div class="image-container" id="image-container"></div>
+<div class="actions"><button id="show-answer-btn" disabled>Toon antwoord</button><button id="next-question-btn" disabled>Volgende vraag</button></div>
+<div class="answer" id="answer-box"></div><p class="muted" id="status-line"></p></section></div>
+
+<script>
+const questions = {
+1:[{text:"Onderaan de berg is het 24 °C. Elke 100 meter hoger wordt het 0,6 °C kouder.<br><br>Wat is de temperatuur 1.500 meter hoger?",answer:"1.500 meter is 15 × 100 meter. Elke 100 meter levert 0,6 °C daling op, dus 15 × 0,6 = 9 °C kouder. De temperatuur is dan 24 − 9 = 15 °C."},
+   {text:"Je wilt een pakket versturen met de afmetingen 285 × 318 × 72 mm.<br>In welke doos past dit pakket?",answer:"Het pakket is ongeveer 28,5 × 31,8 × 7,2 cm. Alleen doos C (50 × 40 × 10 cm) is groot genoeg.",images:["images/dozen.png"]}],
+
+2:[{text:"Bij de kassa moet je € 82,45 betalen. Je geeft € 100,00 en een tegoedbon van € 6,70. De caissière vraagt of je er € 0,75 bij hebt.<br><br>Hoeveel geld moet je terugkrijgen?",answer:"Je totale betaling is € 106,70. Met € 0,75 erbij wordt dit € 107,45. Verschil met € 82,45 is € 25,00.",images:["images/kassa.png"]},
+   {text:"6,07 + 8,15 + 2,7 =",answer:"6,07 + 8,15 = 14,22 → +2,7 = 16,92."},
+   {text:"1103 − 5 =",answer:"1103 − 5 = 1098."}],
+
+3:[{text:"Losse nummers kosten € 2,05 per stuk. Een jaarabonnement (52 nummers) kost € 87,50.<br><br>Wat is het voordeel?",answer:"52×2,05=106,60. Voordeel = 106,60−87,50 = € 19,10.",images:["images/duck.png"]},
+   {text:"15 × 12 =",answer:"15 × 12 = 180."}],
+
+4:[{text:"2576 : 23 =",answer:"2576 ÷ 23 = 112."}],
+
+5:[{text:"2/3 × 60 =",answer:"2/3 × 60 = 40."},
+   {text:"16 × 1¼ =",answer:"1¼=5/4 → 16×5/4 = 20."}],
+
+6:[{text:"300 : 6 × (5 − 2)",answer:"(5−2)=3, 300:6=50, 50×3=150."},
+   {text:"Postcodeloterij: €1.005.042. Hoeveel is dat ongeveer?",answer:"≈ €1.000.000."}],
+
+7:[{text:"Harde schijf 10GB, liedje 3,5MB. Hoeveel liedjes?",answer:"10GB=10000MB → 10000/3,5≈2857."},
+   {text:"Training: 22+22+12+12 km per week. Gemiddeld per trainingsdag?",answer:"Totaal 68 km, 4 dagen → 17 km/dag."},
+   {text:"Stage 3 dagen, 14 km heen. Vergoeding 0,19/km.",answer:"28 km per dag → 84 per week → 84×0,19=15,96."},
+   {text:"Vereniging heeft €1800 nodig, per lot €2,40. Hoeveel loten?",answer:"1800/2,40 = 750 loten."}],
+
+8:[{text:"18 jaar, 5 uur werk, 45,5% van €9,13.",answer:"€4,15 per uur → 5×4,15=20,75.",images:["images/minimumloon.png"]},
+   {text:"Hoeveel % komt met de bus?",answer:"5 van 20 = 25%",images:["images/school.png"]},
+   {text:"Verschil loon man/vrouw in %?",answer:"(16200/35600)×100≈45,5%.",images:["images/manvrouw.png"]}],
+
+9:[{text:"Mobieltjes 2008→2010 toename?",answer:"(0,4/3)×100≈13,3%.",images:["images/mobieltjes.png"]},
+   {text:"TV €1331 incl 21% btw. Excl btw?",answer:"1331/1,21≈€1100,83.",images:["images/btw.png"]},
+   {text:"Bezoekers 500.000→2.500.000",answer:"Toename 400%."},
+   {text:"Mp3-speler +10%, daarna −10%. Wat klopt?",answer:"De prijs wordt niet origineel → prijs 3 maart is laagst."}],
+
+10:[{text:"100 cocktails × 10cl. Fles 0,6L.",answer:"100×10cl=10L → 10/0,6=16,7 → 17 flessen.",images:["images/cocktail.png"]},
+    {text:"Hectometerpaal 78,1 naar 77,6.",answer:"Verschil 0,5 km = 500 m.",images:["images/hecto.png"]}],
+
+11:[],
+
+12:[{text:"Tuinder: 1 hectare, kas 100×30.",answer:"1 ha=10000 m². Kas 3000 m² → 3 kassen.",images:["images/tuinder.png"]},
+    {text:"Woonkamer m²?",answer:"66+20=86 m².",images:["images/opervl.png"]},
+    {text:"Verlichtingssnoer podium",answer:"Omtrek 1800 cm = 18 m.",images:["images/podium.png"]},
+    {text:"Schutting 2× zo hoog en 2× zo lang",answer:"Oppervlakte ×4 → 4 blikken verf."}],
+
+13:[{text:"Kerkdak 40×15, sneeuw 20 cm, dichtheid 200 kg/m³",answer:"Volume 600×0,2=120 m³ → 120×200=24000 kg.",images:["images/kerk.png"]},
+    {text:"Zwembad 10×4×1,8",answer:"72 m³ = 72000 L."}],
+
+14:[{text:"Reactieafstand: km/u :10×3. Bij 130?",answer:"130:10=13 → 13×3=39 m.",images:["images/reactiesnelheid.png"]},
+    {text:"44 km, 66 km/u. Aankomst 8:30",answer:"44/66=40 min → vertrek 7:50."}],
+
+15:[{text:"Schaal 1:10000. 1 cm is…",answer:"100 m.",images:["images/plattegrond.png"]},
+    {text:"Poortgebouw, richting foto?",answer:"Bovenste foto kijkt naar het noorden.",images:["images/poortgebouw.png"]},
+    {text:"Reuzenrad 135 m, schaal 1:1000",answer:"135/1000=0,135 m=13,5 cm.",images:["images/reuzenrad.png"]}],
+
+16:[{text:"Je vader, je broer van 18 en je zus van 16 zijn lid van de zwemvereniging. Je vader en je zus doen aan zwemmen en je broer doet aan waterpolo.<br><br>Hoeveel contributie betalen zij samen per termijn?",answer:"Vader (18+): zwemmen = €130 per jaar → €65 per termijn.<br>Broer (18 jaar): waterpolo = €160 per jaar → €80 per termijn.<br>Zus (16 jaar): zwemmen (12–18 jaar) = €108 per jaar → €54 per termijn.<br>Totaal per termijn: 65 + 80 + 54 = €199.",images:["images/lid.png"]},
+    {text:"Dennis moet om 17:00 uur op de RAI zijn. Vanaf station Amsterdam RAI moet hij nog 20 minuten lopen.<br><br>Welke trein vanaf Lichtenvoorde-Groenlo moet hij uiterlijk nemen?",answer:"Hij moet om 16:40 op station RAI aankomen (20 min looptijd). Laatste trein die op tijd is, komt 16:36 aan; die vertrekt om 15:01.",images:["images/ov.png"]},
+    {text:"Voetlengte is 22,5 cm.<br><br>Wat is de juiste Nederlandse schoenmaat?",answer:"In de tabel hoort 22,5 cm bij maat 35.",images:["images/schoenmaat.png"]}],
+
+17:[{text:"Wat was de gemiddelde temperatuur in juli over de jaren 2005 t/m 2010? Rond af op één decimaal.",answer:"Waarden (afgelezen): 19,6; 20,1; 20,1; 20,3; 20,5; 20,6.<br>Som = 121,2 → 121,2/6 ≈ 20,2 °C.",images:["images/temp.png"]}],
+
+18:[]
+};
+
+
+const chapterSelect=document.getElementById("chapter-select"),
+newQ=document.getElementById("new-question-btn"),
+showA=document.getElementById("show-answer-btn"),
+nextQ=document.getElementById("next-question-btn"),
+qTitle=document.getElementById("question-title"),
+qText=document.getElementById("question-text"),
+badge=document.getElementById("chapter-badge"),
+imgC=document.getElementById("image-container"),
+ans=document.getElementById("answer-box"),
+status=document.getElementById("status-line");
+let state={chapter:null,index:null,total:null,obj:null};
+const label=c=>chapterSelect.querySelector(`option[value="${c}"]`)?.textContent||`Hoofdstuk ${c}`;
+const next=c=>{const L=questions[c];if(!L.length)return null; if(state.chapter!==c)return{q:L[0],i:0,t:L.length}; let n=state.index+1; if(n>=L.length)n=0; return{q:L[n],i:n,t:L.length};};
+const render=()=>{if(!state.obj){qTitle.innerText="Geen vraag";qText.innerText="Voor dit hoofdstuk zijn nog geen vragen.";imgC.innerHTML="";ans.style.display="none";showA.disabled=true;nextQ.disabled=true;badge.innerText="Hoofdstuk –";status.innerText="";return;} badge.innerText=label(state.chapter);qTitle.innerText=`Vraag ${state.index+1} van ${state.total}`;qText.innerHTML=state.obj.text.replace(/\n/g,"<br>");imgC.innerHTML="";state.obj.images?.forEach(s=>imgC.innerHTML+=`<img src="${s}">`);ans.style.display="none";ans.innerHTML=state.obj.answer.replace(/\n/g,"<br>");showA.disabled=false;nextQ.disabled=false;status.innerText=`Hoofdstuk ${state.chapter} – ${state.total} vragen`;};
+const generate=()=>{const c=chapterSelect.value,r=next(c);state=r?{chapter:c,index:r.i,total:r.t,obj:r.q}:{chapter:c,index:null,total:0,obj:null};render();};
+newQ.onclick=generate;
+nextQ.onclick=generate;
+showA.onclick=()=>{if(!state.obj)return; ans.style.display=ans.style.display==="none"?"block":"none"; showA.innerText=ans.style.display==="none"?"Toon antwoord":"Verberg antwoord";};
+render();
+</script>
+</body></html>
